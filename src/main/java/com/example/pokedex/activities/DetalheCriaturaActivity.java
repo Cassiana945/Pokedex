@@ -39,7 +39,7 @@ public class DetalheCriaturaActivity extends AppCompatActivity {
         String nome = i.getStringExtra("nome");
         String tipo = i.getStringExtra("tipo");
         String poder = i.getStringExtra("poder");
-        boolean descoberto = i.getBooleanExtra("decoberto", false);
+        boolean descoberto = i.getBooleanExtra("descoberto", false);
 
 
         imgPokemon.setImageResource(img);
@@ -61,16 +61,12 @@ public class DetalheCriaturaActivity extends AppCompatActivity {
         btnExcluir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dbCriatura.findOneCriatura(id) == null) {
-                    Toast.makeText(DetalheCriaturaActivity.this, "Criatura não está no seu banco", Toast.LENGTH_SHORT).show();
-                } else {
                     dbCriatura.excluirCriatura(id);
                     Toast.makeText(DetalheCriaturaActivity.this, "Criatura excluída com sucesso!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(DetalheCriaturaActivity.this, SecondActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     finish();
-                }
             }
         });
 

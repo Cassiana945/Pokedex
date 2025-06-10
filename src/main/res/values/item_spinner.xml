@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="lista_tipos">
+        <item>inseto</item>
+        <item>sombrio</item>
+        <item>dragão</item>
+        <item>elétrico</item>
+        <item>fada</item>
+        <item>lutador</item>
+        <item>fogo</item>
+        <item>voador</item>
+        <item>fantasma</item>
+        <item>planta</item>
+        <item>terrestre</item>
+        <item>gelo</item>
+        <item>normal</item>
+        <item>venenoso</item>
+        <item>psíquico</item>
+        <item>pedra</item>
+        <item>aço</item>
+        <item>água</item>
+    </string-array>
+</resources>

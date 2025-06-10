@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detalhes"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fundo2"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/lbNome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="125dp"
+        android:text="nome aqui"
+        android:fontFamily="@font/pixelify_sans_bold"
+        android:textColor="@color/white"
+        android:textSize="35sp"/>
+
+    <ImageView
+        android:id="@+id/imgPokemon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/lbNome"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55dp"
+        android:src="@drawable/duskull"/>
+
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_below="@id/imgPokemon"
+        android:layout_marginTop="60dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="tipo:"
+            android:fontFamily="@font/pixelify_sans"
+            android:textSize="25sp"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/lbTipo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="tipo aqui"
+            android:fontFamily="@font/pixelify_sans"
+            android:textSize="25sp"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_below="@id/linear1"
+        android:layout_marginTop="7dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="poder:"
+            android:fontFamily="@font/pixelify_sans"
+            android:textSize="25sp"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/lbPoder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="poder aqui"
+            android:fontFamily="@font/pixelify_sans"
+            android:textSize="25sp"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear3"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_below="@id/linear2"
+        android:layout_marginTop="7dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="descoberto:"
+            android:fontFamily="@font/pixelify_sans"
+            android:textSize="25sp"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/lbDescoberto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sim"
+            android:fontFamily="@font/pixelify_sans"
+            android:textSize="25sp"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/excluir"
+        android:layout_width="150dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="23dp"
+        android:src="@drawable/excluir"
+        android:layout_below="@id/linear3"/>
+
+    <ImageView
+        android:id="@+id/voltar"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:src="@drawable/voltar"
+        android:layout_below="@id/excluir"/>
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+</RelativeLayout>

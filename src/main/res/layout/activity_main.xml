@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fundo1"
+    android:padding="20dp"
+    tools:context=".activities.MainActivity">
+
+    <EditText
+        android:id="@+id/nome"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white"
+        android:fontFamily="@font/pixelify_sans"
+        android:hint="nome"
+        android:textSize="30sp"
+        android:inputType="text"
+        android:textColor="#000000"
+        android:textAlignment="center"
+        android:layout_marginTop="140dp" />
+
+    <EditText
+        android:id="@+id/poder"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white"
+        android:fontFamily="@font/pixelify_sans"
+        android:hint="poder"
+        android:textSize="30sp"
+        android:inputType="text"
+        android:textColor="#000000"
+        android:textAlignment="center"
+        android:layout_below="@id/nome"
+        android:layout_marginTop="35dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="340dp"
+        android:layout_height="200dp"
+        android:layout_below="@id/poder"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="18dp"
+            android:text="  tipo:"
+            android:fontFamily="@font/pixelify_sans"
+            android:textSize="35sp"
+            android:textColor="#f5f5f5"/>
+
+        <Spinner
+            android:id="@+id/tipos_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/registar"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/registrar_criatura"
+        android:layout_below="@id/linearLayout"/>
+
+    <ImageView
+        android:id="@+id/ver_pokedex"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ver_pokedex"
+        android:layout_below="@id/registar"/>
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+
+</RelativeLayout>

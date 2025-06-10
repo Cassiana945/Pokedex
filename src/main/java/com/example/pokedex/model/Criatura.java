@@ -12,22 +12,8 @@ public class Criatura {
     public Criatura() {
     }
 
-    public Criatura(int id, String nome, String tipo, String poder, boolean descoberto) {
+    public Criatura(int id, String nome, String tipo, String poder, boolean descoberto, int imgId) {
         this.id = id;
-        this.nome = nome;
-        this.tipo = tipo;
-        this.poder = poder;
-        this.descoberto = descoberto;
-    }
-
-    public Criatura(String nome, String tipo, String poder, boolean descoberto) {
-        this.nome = nome;
-        this.tipo = tipo;
-        this.poder = poder;
-        this.descoberto = descoberto;
-    }
-
-    public Criatura(String nome, String tipo, String poder, boolean descoberto, int imgId) {
         this.nome = nome;
         this.tipo = tipo;
         this.poder = poder;
@@ -36,6 +22,9 @@ public class Criatura {
     }
 
 
+    public Criatura(String nome, String tipo, String poder, boolean descoberto, int imgId) {
+        this(0, nome, tipo, poder, descoberto, imgId);
+    }
 
     public int getId() {
         return id;

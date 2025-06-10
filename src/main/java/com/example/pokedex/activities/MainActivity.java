@@ -58,11 +58,12 @@ public class MainActivity extends AppCompatActivity {
                 String nome = textNome.getText().toString();
                 String poder = textPoder.getText().toString();
                 boolean descoberto = false;
+                int imgId = R.drawable.default_pokemon;
 
                 if (nome.isEmpty() || poder.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Nome e Poder são campos obrigatórios", Toast.LENGTH_SHORT).show();
                 } else {
-                    Criatura criatura = new Criatura(nome, tipoSelecionado, poder, descoberto);
+                    Criatura criatura = new Criatura(nome, tipoSelecionado, poder, descoberto, imgId);
                     dbCriatura.addCriatura(criatura);
                     Toast.makeText(MainActivity.this, "Criatura registrada com sucesso!", Toast.LENGTH_SHORT).show();
                 }

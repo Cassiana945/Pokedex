@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,6 +48,8 @@ public class CriaturaAdapter extends RecyclerView.Adapter<CriaturaAdapter.ViewHo
     public void onBindViewHolder(@NonNull CriaturaAdapter.ViewHolder holder, int position) {
         Criatura criatura = criaturas.get(position);
         holder.imgPokemon.setImageResource(criatura.getImgId());
+        holder.textNome.setText(criatura.getNome());
+        holder.textTipo.setText(criatura.getTipo());
 
         if (criatura.isDescoberto()) {
             holder.imgDescoberto.setImageResource(R.drawable.check);
@@ -63,6 +66,7 @@ public class CriaturaAdapter extends RecyclerView.Adapter<CriaturaAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        TextView textNome, textTipo;
         ImageView imgPokemon, imgDescoberto;
         CriaturaDatabase dbCriatura;
 
@@ -70,6 +74,8 @@ public class CriaturaAdapter extends RecyclerView.Adapter<CriaturaAdapter.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            textNome = itemView.findViewById(R.id.nome);
+            textTipo = itemView.findViewById(R.id.descricao);
             imgPokemon = itemView.findViewById(R.id.pokemon);
             imgDescoberto = itemView.findViewById(R.id.descoberto);
             dbCriatura = new CriaturaDatabase(contexto);
@@ -120,18 +126,13 @@ public class CriaturaAdapter extends RecyclerView.Adapter<CriaturaAdapter.ViewHo
                         if (!criatura.isDescoberto()) {
                             criatura.setDescoberto(true);
                             dbCriatura.updateDescoberto(criatura.getId(), true);
-                            imgDescoberto.setImageResource(R.drawable.check);
+                            notifyItemChanged(position);
                             Toast.makeText(contexto, "Você descobriu o famigerado " + criatura.getNome() + "! Parabéns, treinador!", Toast.LENGTH_LONG).show();
                             contadorDescobertas++;
 
                             if (contadorDescobertas % 3 == 0 && mInterstitialAd != null) {
                                 mInterstitialAd.show((Activity) contexto);
                             }
-
-                        } else if (dbCriatura.findOneCriatura(criatura.getId()) == null) {
-                            dbCriatura.addCriatura(criatura);
-                            Toast.makeText(contexto, criatura.getNome() + " foi adicionado à sua Pokedex!", Toast.LENGTH_SHORT).show();
-
                         } else {
                             Toast.makeText(contexto, criatura.getNome() + " já foi descoberto!", Toast.LENGTH_SHORT).show();
                         }

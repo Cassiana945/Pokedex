@@ -1,6 +1,7 @@
 package com.example.pokedex.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,26 +19,62 @@ public class SecondActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     CriaturaAdapter adapter;
-    ArrayList<Criatura> lista;
-    CriaturaDatabase dbCriatura = new CriaturaDatabase(this);
+    List<Criatura> lista;
+    CriaturaDatabase dbCriatura;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
+        dbCriatura = new CriaturaDatabase(this);
         recyclerView = findViewById(R.id.recycler);
-        lista = new ArrayList<>();
 
+        carregarCriaturas();
 
-        lista.add(new Criatura("pikachu", "elétrico", "choque do trovão", false, R.drawable.pikachu));
-        lista.add(new Criatura("duskull", "fantasma", "levitação", false, R.drawable.duskull));
-        lista.add(new Criatura("mankey", "luta", "anger point", false, R.drawable.mankey));
-
-        adapter = new CriaturaAdapter(SecondActivity.this, lista);
+        adapter = new CriaturaAdapter(SecondActivity.this, new ArrayList<>(lista));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
 
+    private void carregarCriaturas() {
+        lista = dbCriatura.findAllCriatura();
 
+        if (lista.isEmpty()) {
+            adicionarCriaturasPadrao();
+            lista = dbCriatura.findAllCriatura();
+        }
+    }
+
+    private void adicionarCriaturasPadrao() {
+        try {
+            Criatura pikachu = new Criatura("pikachu", "elétrico", "choque do trovão", false, R.drawable.pikachu);
+            Criatura duskull = new Criatura("duskull", "fantasma", "levitação", false, R.drawable.duskull);
+            Criatura mankey = new Criatura("mankey", "luta", "anger point", false, R.drawable.mankey);
+
+            dbCriatura.addCriatura(pikachu);
+            dbCriatura.addCriatura(duskull);
+            dbCriatura.addCriatura(mankey);
+        } catch (Exception e) {
+            Log.e("SecondActivity", "Erro ao adicionar criaturas padrão", e);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adapter != null) {
+            lista.clear();
+            lista.addAll(dbCriatura.findAllCriatura());
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (dbCriatura != null) {
+            dbCriatura.close();
+        }
+        super.onDestroy();
+    }
 }

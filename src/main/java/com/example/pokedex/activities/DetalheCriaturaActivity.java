@@ -7,11 +7,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pokedex.R;
 import com.example.pokedex.database.CriaturaDatabase;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 public class DetalheCriaturaActivity extends AppCompatActivity {
 
@@ -19,6 +27,7 @@ public class DetalheCriaturaActivity extends AppCompatActivity {
     ImageView imgPokemon;
     ImageView btnExcluir, btnVoltar;
     CriaturaDatabase dbCriatura = new CriaturaDatabase(this);
+    AdView adView2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +41,8 @@ public class DetalheCriaturaActivity extends AppCompatActivity {
         imgPokemon = findViewById(R.id.imgPokemon);
         btnExcluir = findViewById(R.id.excluir);
         btnVoltar = findViewById(R.id.voltar);
+
+        adView2 = findViewById(R.id.adView2);
 
         Intent i = getIntent();
         int id = i.getIntExtra("id", 0);
@@ -70,5 +81,36 @@ public class DetalheCriaturaActivity extends AppCompatActivity {
             }
         });
 
+        ////////////////////////////////Anúncio
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+                Toast.makeText(DetalheCriaturaActivity.this, "Banner rodando...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        adView2.setAdListener(new AdListener() {
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                Toast.makeText(DetalheCriaturaActivity.this, "Falha ao abrir o Banner. \nErro: " + loadAdError, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                Toast.makeText(DetalheCriaturaActivity.this, "Anúncio carregado!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        adView2.loadAd(adRequest);
+
     }
-}
+
+    }
+

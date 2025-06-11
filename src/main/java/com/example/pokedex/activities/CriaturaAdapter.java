@@ -1,141 +1,147 @@
 package com.example.pokedex.activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pokedex.R;
 import com.example.pokedex.database.CriaturaDatabase;
 import com.example.pokedex.model.Criatura;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
+import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class CriaturaAdapter extends RecyclerView.Adapter<CriaturaAdapter.ViewHolder> {
 
-    EditText textNome, textPoder;
-    ImageView btnRegistar, btnVerPokedex;
-    AdView adView;
-    String tipoSelecionado = "";
-    CriaturaDatabase dbCriatura = new CriaturaDatabase(this);
+    Context contexto;
+    ArrayList<Criatura> criaturas;
+    private static int contadorDescobertas = 0;
+    private InterstitialAd mInterstitialAd;
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-
-        textNome = findViewById(R.id.nome);
-        textPoder = findViewById(R.id.poder);
-        btnRegistar = findViewById(R.id.registar);
-        btnVerPokedex = findViewById(R.id.ver_pokedex);
-        adView = findViewById(R.id.adView);
-
-
-        //////////////////////////Salvar Criatura
-
-        btnRegistar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nome = textNome.getText().toString();
-                String poder = textPoder.getText().toString();
-                boolean descoberto = false;
-                int imgId = R.drawable.default_pokemon;
-
-                if (nome.isEmpty() || poder.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Nome e Poder são campos obrigatórios", Toast.LENGTH_SHORT).show();
-                } else {
-                    Criatura criatura = new Criatura(nome, tipoSelecionado, poder, descoberto, imgId);
-                    dbCriatura.addCriatura(criatura);
-                    Toast.makeText(MainActivity.this, "Criatura registrada com sucesso!", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
-        //////////////////////////Intent para SecondActivity
-
-        btnVerPokedex.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            }
-        });
-
-        ////////////////////////////////////////Spinner
-
-        Spinner spinner = findViewById(R.id.tipos_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.lista_tipos,
-                R.layout.item_spinner
-        );
-        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown);
-        spinner.setAdapter(adapter);
-
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                tipoSelecionado = parent.getItemAtPosition(position).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(MainActivity.this, "Escolha um Tipo de Pokemon", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        //////////////////////////////////// Anúncio
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
-                Toast.makeText(MainActivity.this, "Banner rodando...", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        adView.setAdListener(new AdListener() {
-
-            @Override
-            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                super.onAdFailedToLoad(loadAdError);
-                Toast.makeText(MainActivity.this, "Falha ao abrir o Banner. \nErro: " + loadAdError, Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onAdLoaded() {
-                super.onAdLoaded();
-                Toast.makeText(MainActivity.this, "Anúncio carregado!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        adView.loadAd(adRequest);
-
+    public CriaturaAdapter(Context contexto, ArrayList<Criatura> criaturas) {
+        this.contexto = contexto;
+        this.criaturas = criaturas;
     }
 
-}
+    @NonNull
+    @Override
+    public CriaturaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater
+                .from(contexto)
+                .inflate(R.layout.item_view, parent, false);
+        return new ViewHolder(view);
+    }
 
+    @Override
+    public void onBindViewHolder(@NonNull CriaturaAdapter.ViewHolder holder, int position) {
+        Criatura criatura = criaturas.get(position);
+        holder.imgPokemon.setImageResource(criatura.getImgId());
+        holder.textNome.setText(criatura.getNome());
+        holder.textTipo.setText(criatura.getTipo());
+
+        if (criatura.isDescoberto()) {
+            holder.imgDescoberto.setImageResource(R.drawable.check);
+        } else {
+            holder.imgDescoberto.setImageResource(R.drawable.adicionar);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return criaturas.size();
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView textNome, textTipo;
+        ImageView imgPokemon, imgDescoberto;
+        CriaturaDatabase dbCriatura;
+
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            textNome = itemView.findViewById(R.id.nome);
+            textTipo = itemView.findViewById(R.id.descricao);
+            imgPokemon = itemView.findViewById(R.id.pokemon);
+            imgDescoberto = itemView.findViewById(R.id.descoberto);
+            dbCriatura = new CriaturaDatabase(contexto);
+
+
+            AdRequest adRequest = new AdRequest.Builder().build();
+
+            InterstitialAd.load(contexto, "ca-app-pub-3940256099942544/1033173712", adRequest,
+                    new InterstitialAdLoadCallback() {
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            mInterstitialAd = null;
+                        }
+
+                        @Override
+                        public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                            mInterstitialAd = interstitialAd;
+                        }
+                    });
+
+
+
+            imgPokemon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Criatura criatura = criaturas.get(position);
+                        Intent intent = new Intent(contexto, DetalheCriaturaActivity.class);
+                        intent.putExtra("id", criatura.getId());
+                        intent.putExtra("imageId", criatura.getImgId());
+                        intent.putExtra("nome", criatura.getNome());
+                        intent.putExtra("tipo", criatura.getTipo());
+                        intent.putExtra("poder", criatura.getPoder());
+                        intent.putExtra("descoberto", criatura.isDescoberto());
+                        contexto.startActivity(intent);
+                        ((Activity) contexto).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    }
+                }
+            });
+
+            imgDescoberto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Criatura criatura = criaturas.get(position);
+                        if (!criatura.isDescoberto()) {
+                            criatura.setDescoberto(true);
+                            dbCriatura.updateDescoberto(criatura.getId(), true);
+                            notifyItemChanged(position);
+                            Toast.makeText(contexto, "Você descobriu o famigerado " + criatura.getNome() + "! Parabéns, treinador!", Toast.LENGTH_LONG).show();
+                            contadorDescobertas++;
+
+                            if (contadorDescobertas % 3 == 0 && mInterstitialAd != null) {
+                                mInterstitialAd.show((Activity) contexto);
+                            }
+                        } else {
+                            Toast.makeText(contexto, criatura.getNome() + " já foi descoberto!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            });
+
+
+        }
+    }
+}
 

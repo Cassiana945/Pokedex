@@ -26,13 +26,11 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 
-
 public class MainActivity extends AppCompatActivity {
 
     EditText textNome, textPoder;
     ImageView btnRegistar, btnVerPokedex;
     AdView adView;
-
     String tipoSelecionado = "";
     CriaturaDatabase dbCriatura = new CriaturaDatabase(this);
 
@@ -119,20 +117,25 @@ public class MainActivity extends AppCompatActivity {
         });
 
         adView.setAdListener(new AdListener() {
+
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
                 Toast.makeText(MainActivity.this, "Falha ao abrir o Banner. \nErro: " + loadAdError, Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void onAdLoaded() {
                 super.onAdLoaded();
-                Toast.makeText(MainActivity.this, "Anúncio Carregado!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Anúncio carregado!", Toast.LENGTH_SHORT).show();
             }
         });
 
-
         adView.loadAd(adRequest);
+
     }
+
 }
+
+
